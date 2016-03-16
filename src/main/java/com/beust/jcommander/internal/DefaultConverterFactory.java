@@ -29,7 +29,6 @@ import com.beust.jcommander.converters.ISO8601DateConverter;
 import com.beust.jcommander.converters.IntegerConverter;
 import com.beust.jcommander.converters.LongConverter;
 import com.beust.jcommander.converters.StringConverter;
-import com.beust.jcommander.converters.PathConverter;
 import com.beust.jcommander.converters.URIConverter;
 import com.beust.jcommander.converters.URLConverter;
 
@@ -38,7 +37,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Map;
 
 public class DefaultConverterFactory implements IStringConverterFactory {
@@ -63,7 +61,13 @@ public class DefaultConverterFactory implements IStringConverterFactory {
     m_classConverters.put(File.class, FileConverter.class);
     m_classConverters.put(BigDecimal.class, BigDecimalConverter.class);
     m_classConverters.put(Date.class, ISO8601DateConverter.class);
-    m_classConverters.put(Path.class, PathConverter.class);
+    try {
+      Class<?> pathClass = Class.forName("java.nio.file.Path");
+      Class<?> pathConverterClass = Class.forName("com.beust.jcommander.converters.PathConverter");
+      m_classConverters.put(pathClass, (Class<? extends IStringConverter<?>>)pathConverterClass);
+    } catch (ClassNotFoundException e) {
+      // Do nothing: Android does not have java.nio.file.Path
+    }
     m_classConverters.put(URI.class, URIConverter.class);
     m_classConverters.put(URL.class, URLConverter.class);
   }
