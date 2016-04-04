@@ -27,12 +27,21 @@ jcommander_all_src_files := $(call all-java-files-under, src/main)
 # Filter out PathConverter since android is missing java.nio.file APIs.
 jcommander_android_src_files := $(filter-out %/PathConverter.java,$(jcommander_all_src_files))
 
+# Target Java build
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := $(jcommander_android_src_files)
+LOCAL_MODULE := jcommander
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_STATIC_JAVA_LIBRARY)
+
+# Host Java build
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := $(jcommander_all_src_files)
 LOCAL_MODULE := jcommander-host
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_HOST_JAVA_LIBRARY)
 
+# Host dalvik build
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := $(jcommander_android_src_files)
 LOCAL_MODULE := jcommander-hostdex
