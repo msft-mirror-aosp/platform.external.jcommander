@@ -22,6 +22,7 @@ java_library_static {
     name: "jcommander",
     host_supported: true,
     hostdex: true,
+    sdk_version: "core_current",
 
     srcs: ["src/main/**/*.java"],
     target: {
