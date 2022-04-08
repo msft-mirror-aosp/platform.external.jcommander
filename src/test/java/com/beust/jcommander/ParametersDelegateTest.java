@@ -143,7 +143,7 @@ public class ParametersDelegateTest {
   public void mainParametersTest() {
     class Delegate {
       @Parameter
-      public List<String> mainParams = new ArrayList<>();
+      public List<String> mainParams = new ArrayList<String>();
     }
     class Command {
       @ParametersDelegate
@@ -200,11 +200,11 @@ public class ParametersDelegateTest {
   public void duplicateMainParametersAreNotAllowed() {
     class Delegate1 {
       @Parameter
-      public List<String> mainParams1 = new ArrayList<>();
+      public List<String> mainParams1 = new ArrayList<String>();
     }
     class Delegate2 {
       @Parameter
-      public List<String> mainParams2 = new ArrayList<>();
+      public List<String> mainParams2 = new ArrayList<String>();
     }
     class Command {
       @ParametersDelegate

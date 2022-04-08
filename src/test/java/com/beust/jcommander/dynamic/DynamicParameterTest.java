@@ -51,5 +51,10 @@ public class DynamicParameterTest {
   public static void main(String[] args) {
     DynamicParameterTest dpt = new DynamicParameterTest();
     dpt.simpleWithSpaces();
+//    dpt.nonMapShouldThrow();
+//    dpt.wrongSeparatorShouldThrow();
+//    dpt.differentAssignment();
+//    dpt.arity0();
+//    dpt.usage();
   }
 }

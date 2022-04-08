@@ -1,6 +1,5 @@
 package com.beust.jcommander;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -8,81 +7,68 @@ import java.lang.reflect.Method;
  * Encapsulates the operations common to @Parameter and @DynamicParameter
  */
 public class WrappedParameter {
-  private Parameter parameter;
-  private DynamicParameter dynamicParameter;
+  private Parameter m_parameter;
+  private DynamicParameter m_dynamicParameter;
 
   public WrappedParameter(Parameter p) {
-    parameter = p;
+    m_parameter = p;
   }
 
   public WrappedParameter(DynamicParameter p) {
-    dynamicParameter = p;
+    m_dynamicParameter = p;
   }
 
   public Parameter getParameter() {
-    return parameter;
+    return m_parameter;
   }
 
   public DynamicParameter getDynamicParameter() {
-    return dynamicParameter;
+    return m_dynamicParameter;
   }
 
   public int arity() {
-    return parameter != null ? parameter.arity() : 1;
+    return m_parameter != null ? m_parameter.arity() : 1;
   }
 
   public boolean hidden() {
-    return parameter != null ? parameter.hidden() : dynamicParameter.hidden();
+    return m_parameter != null ? m_parameter.hidden() : m_dynamicParameter.hidden();
   }
 
   public boolean required() {
-    return parameter != null ? parameter.required() : dynamicParameter.required();
+    return m_parameter != null ? m_parameter.required() : m_dynamicParameter.required();
   }
 
   public boolean password() {
-    return parameter != null ? parameter.password() : false;
+    return m_parameter != null ? m_parameter.password() : false;
   }
 
   public String[] names() {
-    return parameter != null ? parameter.names() : dynamicParameter.names();
+    return m_parameter != null ? m_parameter.names() : m_dynamicParameter.names();
   }
 
   public boolean variableArity() {
-    return parameter != null ? parameter.variableArity() : false;
+    return m_parameter != null ? m_parameter.variableArity() : false;
   }
 
-  public Class<? extends IParameterValidator>[] validateWith() {
-    return parameter != null ? parameter.validateWith() : dynamicParameter.validateWith();
+  public Class<? extends IParameterValidator> validateWith() {
+    return m_parameter != null ? m_parameter.validateWith() : m_dynamicParameter.validateWith();
   }
 
-  public Class<? extends IValueValidator>[] validateValueWith() {
-    return parameter != null
-        ? parameter.validateValueWith()
-        : dynamicParameter.validateValueWith();
+  public Class<? extends IValueValidator> validateValueWith() {
+    return m_parameter != null
+        ? m_parameter.validateValueWith()
+        : m_dynamicParameter.validateValueWith();
   }
 
   public boolean echoInput() {
-	  return parameter != null ? parameter.echoInput() : false;
+	  return m_parameter != null ? m_parameter.echoInput() : false;
   }
 
   public void addValue(Parameterized parameterized, Object object, Object value) {
-    try {
-      addValue(parameterized, object, value, null);
-    } catch (IllegalAccessException e) {
-      throw new ParameterException("Couldn't set " + object + " to " + value, e);
-    }
-  }
-
-  public void addValue(Parameterized parameterized, Object object, Object value, Field field)
-          throws IllegalAccessException {
-    if (parameter != null) {
-      if (field != null) {
-        field.set(object, value);
-      } else {
-        parameterized.set(object, value);
-      }
+    if (m_parameter != null) {
+      parameterized.set(object, value);
     } else {
-      String a = dynamicParameter.assignment();
+      String a = m_dynamicParameter.assignment();
       String sv = value.toString();
 
       int aInd = sv.indexOf(a);
@@ -100,7 +86,13 @@ public class WrappedParameter {
       Method m;
       m = findPut(parameterized.getType());
       m.invoke(parameterized.get(object), key, value);
-    } catch (SecurityException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    } catch (SecurityException e) {
+      e.printStackTrace();
+    } catch(IllegalAccessException e) {
+      e.printStackTrace();
+    } catch(InvocationTargetException e) {
+      e.printStackTrace();
+    } catch (NoSuchMethodException e) {
       e.printStackTrace();
     }
   }
@@ -110,14 +102,14 @@ public class WrappedParameter {
   }
 
   public String getAssignment() {
-    return dynamicParameter != null ? dynamicParameter.assignment() : "";
+    return m_dynamicParameter != null ? m_dynamicParameter.assignment() : "";
   }
 
   public boolean isHelp() {
-    return parameter != null && parameter.help();
+    return m_parameter != null && m_parameter.help();
   }
 
   public boolean isNonOverwritableForced() {
-      return parameter != null && parameter.forceNonOverwritable();
+      return m_parameter != null && m_parameter.forceNonOverwritable();
   }
 }

@@ -21,7 +21,7 @@ package com.beust.jcommander.args;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
-@Parameters
+@Parameters(optionPrefixes = "/")
 public class SlashSeparator {
 
   @Parameter(names = "/verbose")

@@ -32,7 +32,7 @@ import java.util.Properties;
  */
 public class PropertyFileDefaultProvider implements IDefaultProvider {
   public static final String DEFAULT_FILE_NAME = "jcommander.properties";
-  private Properties properties;
+  private Properties m_properties;
 
   public PropertyFileDefaultProvider() {
     init(DEFAULT_FILE_NAME);
@@ -44,10 +44,10 @@ public class PropertyFileDefaultProvider implements IDefaultProvider {
 
   private void init(String fileName) {
     try {
-      properties = new Properties();
+      m_properties = new Properties();
       URL url = ClassLoader.getSystemResource(fileName);
       if (url != null) {
-        properties.load(url.openStream());
+        m_properties.load(url.openStream());
       } else {
         throw new ParameterException("Could not find property file: " + fileName
             + " on the class path");
@@ -64,7 +64,7 @@ public class PropertyFileDefaultProvider implements IDefaultProvider {
       index++;
     }
     String key = optionName.substring(index);
-    return properties.getProperty(key);
+    return m_properties.getProperty(key);
   }
 
 }

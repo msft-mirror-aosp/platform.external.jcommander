@@ -14,7 +14,7 @@ public class PositiveIntegerTest {
     }
     Arg arg = new Arg();
     JCommander jc = new JCommander(arg);
-    jc.parse("-p", "8080");
+    jc.parse(new String[] { "-p", "8080" });
 
   }
 
@@ -26,7 +26,7 @@ public class PositiveIntegerTest {
     }
     Arg arg = new Arg();
     JCommander jc = new JCommander(arg);
-    jc.parse("-p", "");
+    jc.parse(new String[] { "-p", "" });
   }
 
   @Test(expectedExceptions = ParameterException.class)
@@ -37,7 +37,7 @@ public class PositiveIntegerTest {
     }
     Arg arg = new Arg();
     JCommander jc = new JCommander(arg);
-    jc.parse("-p", "-1");
+    jc.parse(new String[] { "-p", "-1" });
   }
 
   @Test(expectedExceptions = ParameterException.class)
@@ -48,7 +48,7 @@ public class PositiveIntegerTest {
     }
     Arg arg = new Arg();
     JCommander jc = new JCommander(arg);
-    jc.parse("-p", "abc");
+    jc.parse(new String[] { "-p", "abc" });
   }
 
   @Test(expectedExceptions = ParameterException.class)
@@ -60,6 +60,6 @@ public class PositiveIntegerTest {
 
     Arg arg = new Arg();
     JCommander jc = new JCommander(arg);
-    jc.parse("--port", " ");
+    jc.parse(new String[] { "--port", " " });
   }
 }
